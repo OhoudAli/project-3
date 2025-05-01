@@ -8,10 +8,7 @@ import com.example.project3.Service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/employee")
@@ -25,6 +22,30 @@ private final EmployeeService employeeService;
          employeeService.register(userDTO, employeeDTO);
 
          return ResponseEntity.status(200).body(new ApiResponse("Employee register successfully"));
+    }
+
+
+    @GetMapping("/{employeeId}")
+    public ResponseEntity getAllEmployees(@PathVariable Integer employeeId) {
+        return ResponseEntity.ok(employeeService.getAllEmployees(employeeId));
+    }
+
+    @DeleteMapping("/{employeeId}")
+    public ResponseEntity deleteEmployee(@PathVariable Integer employeeId) {
+        employeeService.deleteEmployee(employeeId);
+        return ResponseEntity.ok("Employee deleted successfully");
+    }
+
+    @PutMapping("/accounts-activate/{employeeId}/{accountId}")
+    public ResponseEntity activateAccount(@PathVariable Integer employeeId, @PathVariable Integer accountId) {
+        employeeService.activateAccount(employeeId, accountId);
+        return ResponseEntity.ok("Account activated successfully");
+    }
+
+    @PutMapping("/accounts-block/{employeeId}/{accountId}")
+    public ResponseEntity blockAccount(@PathVariable Integer employeeId, @PathVariable Integer accountId) {
+        employeeService.blockAccount(employeeId, accountId);
+        return ResponseEntity.ok("Account blocked successfully");
     }
 
 }

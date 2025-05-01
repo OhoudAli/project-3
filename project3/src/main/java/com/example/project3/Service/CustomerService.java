@@ -1,5 +1,6 @@
 package com.example.project3.Service;
 
+import com.example.project3.Api.ApiException;
 import com.example.project3.DTO.CustomerDTO;
 import com.example.project3.DTO.UserDTO;
 import com.example.project3.Model.Customer;
@@ -10,6 +11,8 @@ import com.example.project3.Repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +39,36 @@ public class CustomerService {
 
         customer.setUser(user);
         customerRepository.save(customer);
+    }
+
+
+    public List<Customer> getAllCustomers(Integer employee_id){
+        return customerRepository.findAll();
+    }
+
+
+    public void updateCustomer(Integer customerId,CustomerDTO customerDTO){
+
+        Customer customer= customerRepository.findCustomerById(customerId);
+
+        if (customer==null){
+            throw new ApiException("customer is not found");
+        }
+
+
+        customer.setPhoneNumber(customerDTO.getPhoneNumber());
+
+        customerRepository.save(customer);
+
+
+    }
+
+    public void deleteCustomer(Integer id) {
+        Customer customer = customerRepository.findCustomerById(id);
+        if(customer == null){
+              throw   new ApiException("Customer not found");
+        }
+        customerRepository.delete(customer);
+        authRepository.delete(customer.getUser());
     }
 }

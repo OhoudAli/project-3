@@ -20,7 +20,7 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @NotNull
     @Pattern(regexp = "^\\d{4}-\\d{4}-\\d{4}-\\d{4}$")
