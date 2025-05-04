@@ -3,7 +3,6 @@ package com.example.project3.Service;
 
 import com.example.project3.Api.ApiException;
 import com.example.project3.DTO.EmployeeDTO;
-import com.example.project3.DTO.UserDTO;
 import com.example.project3.Model.Account;
 import com.example.project3.Model.Employee;
 import com.example.project3.Model.User;
@@ -25,15 +24,15 @@ public class EmployeeService {
     private final AuthRepository authRepository;
     private final AccountRepository accountRepository;
 
-    public void register(UserDTO userDTO,EmployeeDTO employeeDTO){
+    public void register(EmployeeDTO employeeDTO){
         User user = new User();
 
         user.setRole("EMPLOYEE");
-        user.setUsername(userDTO.getUsername());
-        user.setName(userDTO.getName());
-        user.setEmail(userDTO.getEmail());
+        user.setUsername(employeeDTO.getUsername());
+        user.setName(employeeDTO.getName());
+        user.setEmail(employeeDTO.getEmail());
 
-        String hashPassword = new BCryptPasswordEncoder().encode(userDTO.getPassword());
+        String hashPassword = new BCryptPasswordEncoder().encode(employeeDTO.getPassword());
         user.setPassword(hashPassword);
         authRepository.save(user);
 
@@ -52,13 +51,13 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-//    public Employee getEmployeeById(Integer id) {
-//        Employee employee= employeeRepository.findEmployeeById(id);
-//                if(employee == null) {
-//                    new ApiException("Employee not found");
-//                }
-//            r
-//    }
+    public Employee getEmployeeById(Integer id) {
+        Employee employee= employeeRepository.findEmployeeById(id);
+                if(employee == null) {
+                    new ApiException("Employee not found");
+                }
+            return employee;
+    }
 
 
 
@@ -100,6 +99,21 @@ public class EmployeeService {
         accountRepository.save(account);
 
 
+    }
+
+    public void updateEmployee(Integer userId,Integer employeeId, EmployeeDTO employeeDTO) {
+        Employee employee = employeeRepository.findEmployeeById(employeeId);
+        if (employee==null){
+            throw new ApiException("Employee not found");
+        }
+        if (employee.getUser().getId()!=userId){
+            throw new ApiException("Unauthorized");
+        }
+
+        employee.setPosition(employeeDTO.getPosition());
+        employee.setSalary(employeeDTO.getSalary());
+
+        employeeRepository.save(employee);
     }
 
     public void blockAccount(Integer employeeId, Integer accountId){

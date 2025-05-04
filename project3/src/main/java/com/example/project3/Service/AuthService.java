@@ -1,12 +1,6 @@
 package com.example.project3.Service;
 
 
-import com.example.project3.Api.ApiException;
-import com.example.project3.DTO.CustomerDTO;
-import com.example.project3.DTO.EmployeeDTO;
-import com.example.project3.DTO.UserDTO;
-import com.example.project3.Model.Customer;
-import com.example.project3.Model.Employee;
 import com.example.project3.Model.User;
 import com.example.project3.Repository.AuthRepository;
 import com.example.project3.Repository.CustomerRepository;

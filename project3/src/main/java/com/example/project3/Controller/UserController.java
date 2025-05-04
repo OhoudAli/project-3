@@ -2,9 +2,6 @@ package com.example.project3.Controller;
 
 
 import com.example.project3.Api.ApiResponse;
-import com.example.project3.DTO.CustomerDTO;
-import com.example.project3.DTO.EmployeeDTO;
-import com.example.project3.DTO.UserDTO;
 import com.example.project3.Service.AuthService;
 import com.example.project3.Service.CustomerService;
 import com.example.project3.Service.EmployeeService;

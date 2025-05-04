@@ -2,12 +2,10 @@ package com.example.project3.Service;
 
 import com.example.project3.Api.ApiException;
 import com.example.project3.DTO.CustomerDTO;
-import com.example.project3.DTO.UserDTO;
 import com.example.project3.Model.Customer;
 import com.example.project3.Model.User;
 import com.example.project3.Repository.AuthRepository;
 import com.example.project3.Repository.CustomerRepository;
-import com.example.project3.Repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,13 +21,13 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
 
 
-    public void register(UserDTO userDTO, CustomerDTO customerDTO){
+    public void register( CustomerDTO customerDTO){
         User user = new User();
 
         user.setRole("CUSTOMER");
-        user.setUsername(userDTO.getUsername());
-        user.setName(userDTO.getName());
-        String hashPassword = new BCryptPasswordEncoder().encode(userDTO.getPassword());
+        user.setUsername(customerDTO.getUsername());
+        user.setName(customerDTO.getName());
+        String hashPassword = new BCryptPasswordEncoder().encode(customerDTO.getPassword());
         user.setPassword(hashPassword);
         authRepository.save(user);
 
@@ -42,8 +40,16 @@ public class CustomerService {
     }
 
 
-    public List<Customer> getAllCustomers(Integer employee_id){
-        return customerRepository.findAll();
+    public List<Customer> getAllCustomers(Integer userId) {
+        return customerRepository.findAllByUserId(userId);
+    }
+
+    public Customer getCustomerById(Integer customerId) {
+        Customer customer = customerRepository.findCustomerById(customerId);
+        if (customer==null){
+            throw new ApiException("Customer not found");
+        }
+        return customer;
     }
 
 

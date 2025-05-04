@@ -11,4 +11,5 @@ import java.util.List;
 public interface CustomerRepository  extends JpaRepository<Customer,Integer> {
 
     Customer findCustomerById(Integer id);
+    List<Customer> findAllByUserId(Integer userId);
 }
